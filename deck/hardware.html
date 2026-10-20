@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>JalSatya strip and reader, design drawing</title>
+<style>
+  @font-face { font-family: "Barlow"; src: url("../demo/fonts/Barlow-Regular.ttf"); font-weight: 400; }
+  @font-face { font-family: "Barlow"; src: url("../demo/fonts/Barlow-SemiBold.ttf"); font-weight: 600; }
+  @font-face { font-family: "Barlow"; src: url("../demo/fonts/Barlow-Bold.ttf"); font-weight: 700; }
+  @font-face { font-family: "Barlow Semi Condensed"; src: url("../demo/fonts/BarlowSemiCondensed-Bold.ttf"); font-weight: 700; }
+  html, body { margin: 0; background: #ffffff; }
+  svg { display: block; }
+  .lbl { font: 600 27px "Barlow", sans-serif; fill: #13315c; }
+  .lead { stroke: #8a94a3; stroke-width: 2; fill: none; }
+  .dot { fill: #8a94a3; }
+</style>
+</head>
+<body>
+<svg id="art" width="660" height="600" viewBox="0 0 660 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- ======================= STRIP, top view ======================= -->
+  <g id="strip">
+    <rect x="20" y="104" width="620" height="110" rx="12" fill="#ffffff" stroke="#b9c6d3" stroke-width="2.5"/>
+    <!-- printed silver tracks -->
+    <path d="M128 159 H585" stroke="#b8c0c9" stroke-width="6" stroke-linecap="round"/>
+    <path d="M152 131 Q178 122 206 122 H585" stroke="#b8c0c9" stroke-width="6" stroke-linecap="round" fill="none"/>
+    <path d="M152 187 Q178 196 206 196 H585" stroke="#b8c0c9" stroke-width="6" stroke-linecap="round" fill="none"/>
+    <!-- contacts -->
+    <rect x="588" y="113" width="40" height="18" rx="3" fill="#c9a24a"/>
+    <rect x="588" y="150" width="40" height="18" rx="3" fill="#c9a24a"/>
+    <rect x="588" y="187" width="40" height="18" rx="3" fill="#c9a24a"/>
+    <!-- electrode cell at the dip end -->
+    <path d="M114 121 A40 40 0 1 0 156 128" stroke="#3d434c" stroke-width="10" fill="none" stroke-linecap="round"/>
+    <path d="M152 182 A33 33 0 0 0 161 151" stroke="#a7b0ba" stroke-width="8" fill="none" stroke-linecap="round"/>
+    <circle cx="108" cy="159" r="19" fill="#22262c"/>
+    <!-- dried buffer pad -->
+    <rect x="38" y="112" width="136" height="94" rx="14" fill="#2f7fc1" fill-opacity="0.16" stroke="#2f7fc1" stroke-width="2" stroke-dasharray="6 5"/>
+    <!-- serial code -->
+    <g id="qr" transform="translate(420 124)"></g>
+  </g>
+
+  <!-- strip labels -->
+  <circle class="dot" cx="60" cy="118" r="4"/>
+  <path class="lead" d="M60 118 V44 H76"/>
+  <text x="84" y="53" class="lbl">Buffer pad, pH 5.5</text>
+
+  <circle class="dot" cx="108" cy="159" r="4"/>
+  <path class="lead" d="M108 159 L132 262 H150"/>
+  <text x="158" y="271" class="lbl">3 mm carbon electrode</text>
+
+  <circle class="dot" cx="452" cy="156" r="4"/>
+  <path class="lead" d="M452 156 V62 H470"/>
+  <text x="478" y="53" class="lbl">One serial</text>
+  <text x="478" y="84" class="lbl">per strip</text>
+
+  <!-- ======================= READER ======================= -->
+  <g id="reader">
+    <rect x="20" y="430" width="160" height="44" rx="7" fill="#ffffff" stroke="#b9c6d3" stroke-width="2.5"/>
+    <rect x="28" y="436" width="50" height="32" rx="7" fill="#2f7fc1" fill-opacity="0.16" stroke="#2f7fc1" stroke-width="1.5" stroke-dasharray="5 4"/>
+    <circle cx="46" cy="452" r="8" fill="#22262c"/>
+    <path d="M86 452 H180" stroke="#b8c0c9" stroke-width="4"/>
+    <rect x="168" y="356" width="300" height="196" rx="38" fill="#13315c"/>
+    <rect x="163" y="436" width="11" height="32" rx="3" fill="#0b2140"/>
+    <rect x="206" y="384" width="170" height="104" rx="13" fill="#eaf3fb"/>
+    <text x="224" y="446" style="font: 700 46px 'Barlow Semi Condensed', sans-serif; fill: #13315c;">0.33</text>
+    <text x="320" y="446" style="font: 600 17px 'Barlow', sans-serif; fill: #4a5568;">mg/L</text>
+    <rect x="224" y="462" width="134" height="9" rx="4.5" fill="#d9e4ee"/>
+    <rect x="224" y="462" width="58" height="9" rx="4.5" fill="#1f8a5b"/>
+    <circle cx="424" cy="436" r="26" fill="#2f7fc1"/>
+    <circle cx="424" cy="436" r="26" fill="none" stroke="#ffffff" stroke-opacity="0.35" stroke-width="2"/>
+  </g>
+
+  <!-- reader labels -->
+  <circle class="dot" cx="440" cy="372" r="4"/>
+  <path class="lead" d="M440 372 L466 330 H486"/>
+  <text x="494" y="339" class="lbl">Signs</text>
+  <text x="494" y="371" class="lbl">every curve</text>
+
+  <circle class="dot" cx="450" cy="436" r="4"/>
+  <path class="lead" d="M450 436 H486"/>
+  <text x="494" y="445" class="lbl">One button</text>
+
+  <circle class="dot" cx="318" cy="552" r="4"/>
+  <path class="lead" d="M318 552 V580 H334"/>
+  <text x="342" y="589" class="lbl">Pocket reader</text>
+</svg>
+<script>
+  // a fixed serial pattern for the drawing (not a scannable code)
+  (function () {
+    const g = document.getElementById("qr"); let a = 17;
+    const r = () => { a |= 0; a = (a + 0x6d2b79f5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+    const ns = "http://www.w3.org/2000/svg", n = 9, s = 7.4;
+    for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) {
+      const finder = (x < 3 && y < 3) || (x > 5 && y < 3) || (x < 3 && y > 5);
+      const on = finder ? !(x % 3 === 1 && y % 3 === 1) : r() > 0.5;
+      if (on) { const q = document.createElementNS(ns, "rect"); q.setAttribute("x", x * s); q.setAttribute("y", y * s); q.setAttribute("width", s); q.setAttribute("height", s); q.setAttribute("fill", "#1d2633"); g.appendChild(q); }
+    }
+  })();
+</script>
+</body>
+</html>

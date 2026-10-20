@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JalSatya | Free residual chlorine, verified at the tap</title>
+<meta name="description" content="JalSatya: a dye-free chlorine strip, a pocket reader and a record that carries its own proof, for village water testing under Jal Jeevan Mission.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="topbar">
+  <a class="brand" href="#test" aria-label="JalSatya home">
+    <svg viewBox="0 0 32 32" aria-hidden="true">
+      <path d="M16 2.5c5.6 7 9.5 12.2 9.5 17a9.5 9.5 0 0 1-19 0c0-4.8 3.9-10 9.5-17z" fill="#13315c"/>
+      <path d="M11.4 19.6l3.2 3.2 6.2-6.6" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="word">JalSatya</span><span class="hi">जलसत्य</span>
+  </a>
+  <nav class="tabs" role="tablist" aria-label="Sections">
+    <button role="tab" data-view="test" aria-selected="true">Test a tap</button>
+    <button role="tab" data-view="lab" aria-selected="false">Why it reads true</button>
+    <button role="tab" data-view="twin" aria-selected="false">Village chlorine twin</button>
+    <button role="tab" data-view="district" aria-selected="false">District view</button>
+  </nav>
+  <div class="spacer"></div>
+  <span class="proto">Prototype with simulated sensor data</span>
+  <div class="lang" role="group" aria-label="App language">
+    <button data-lang="en" aria-pressed="true">EN</button>
+    <button data-lang="hi" aria-pressed="false">हिं</button>
+  </div>
+  <button class="voice" id="voiceBtn" aria-pressed="false" title="Read the tester's prompts aloud"><svg viewBox="0 0 20 20" width="15" height="15" aria-hidden="true"><path d="M3 7.5h3l4-3.5v12l-4-3.5H3z" fill="currentColor"/><path d="M13 7a4 4 0 0 1 0 6M15.2 4.8a7 7 0 0 1 0 10.4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg><span data-i18n="voice">Voice</span></button>
+</header>
+
+<main>
+
+<!-- ======================= TEST A TAP ======================= -->
+<section class="view active" id="view-test" aria-label="Test a tap">
+  <div class="intro">
+    <div>
+      <h1>A chlorine test that reads itself and leaves proof.</h1>
+      <p>Dip a dye-free strip, read it like a glucometer, and every result is signed at the tap with the electrode's own signal. Typed, copied or reused results are refused.</p>
+    </div>
+    <div class="facts">
+      <div><b class="num">15.72 cr</b><span>rural homes on tap water (PIB, Oct 2025)</span></div>
+      <div><b class="num">24.80 lakh</b><span>women trained on field test kits (PIB, Oct 2025)</span></div>
+      <div><b class="num">≥1.2 cr</b><span>tail-end tap tests a year in the JJM framework</span></div>
+    </div>
+  </div>
+
+  <div class="stage">
+    <!-- phone -->
+    <div class="phone" aria-label="JalSatya field app">
+      <div class="screen">
+        <div class="status"><span class="num" id="clock">10:42</span><span>4G &nbsp;86%</span></div>
+        <div class="appbar">
+          <svg viewBox="0 0 32 32" width="24" height="24" aria-hidden="true"><path d="M16 2.5c5.6 7 9.5 12.2 9.5 17a9.5 9.5 0 0 1-19 0c0-4.8 3.9-10 9.5-17z" fill="#13315c"/><path d="M11.4 19.6l3.2 3.2 6.2-6.6" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="t" data-i18n="app">JalSatya</span>
+          <span class="sub"><span data-i18n="village">Sonpur GP</span><br><span data-i18n="reader">Reader R-0417 paired</span></span>
+        </div>
+
+        <!-- pane 0: home -->
+        <div class="pane on" data-pane="0">
+          <h3 data-i18n="hello">Namaste, Sunita</h3>
+          <p data-i18n="todayTests">This month: 2 tail-end taps and 1 source to test.</p>
+          <div class="assign"><b data-i18n="nextTap">Next: tap T-118, Ward 6</b><br><span data-i18n="nextTapWhy">Farthest tap on the line, as the JJM framework asks.</span></div>
+          <div class="kv">
+            <dt data-i18n="stripsLeft">Strips with you</dt><dd class="num">28</dd>
+            <dt data-i18n="lastSync">Last upload</dt><dd data-i18n="lastSyncV">Today, 08:10</dd>
+          </div>
+          <div class="push"><button class="btn" data-next="1" data-i18n="start">Start test</button></div>
+        </div>
+
+        <!-- pane 1: scan strip -->
+        <div class="pane" data-pane="1">
+          <h3 data-i18n="scanH">Scan the strip</h3>
+          <p data-i18n="scanP">Hold the strip code inside the frame.</p>
+          <div class="viewfinder" aria-hidden="true">
+            <svg class="strip-img" viewBox="0 0 240 64">
+              <rect x="1" y="1" width="238" height="62" rx="6" fill="#fff" stroke="#c8d2dc"/>
+              <rect x="8" y="14" width="54" height="36" rx="4" fill="#3d434b"/>
+              <circle cx="35" cy="32" r="9" fill="#24282e"/>
+              <rect x="66" y="22" width="80" height="4" fill="#9aa7b4"/><rect x="66" y="38" width="80" height="4" fill="#9aa7b4"/>
+              <g id="qr"></g>
+              <text x="152" y="58" font-size="9" font-family="Barlow" fill="#5b6676">JS 26 0019 4471</text>
+            </svg>
+            <div class="scanline"></div>
+            <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          </div>
+          <div class="check" id="scanOk" hidden><i></i><div><b data-i18n="stripOk">Strip JS-26-0019-4471 is valid</b><br><span data-i18n="stripOkSub">Issued to Sonpur GP, unused, expires Mar 2027</span></div></div>
+          <div class="push"><button class="btn" data-next="2" id="scanNext" disabled data-i18n="next">Next</button></div>
+        </div>
+
+        <!-- pane 2: dip -->
+        <div class="pane" data-pane="2">
+          <h3 data-i18n="dipH">Dip the strip in tap water</h3>
+          <p data-i18n="dipP">Fill the cup from tap T-118 and dip the dark end for 3 seconds.</p>
+          <div class="dipbox" aria-hidden="true">
+            <div class="dipstrip" id="dipStrip"><div class="pad"></div></div>
+            <div class="glass"><div class="water"></div></div>
+          </div>
+          <div class="push"><button class="btn" id="dipBtn" data-i18n="dipped">Dip and read</button></div>
+        </div>
+
+        <!-- pane 3: reading -->
+        <div class="pane" data-pane="3">
+          <h3 data-i18n="readingH">Reading the strip</h3>
+          <p data-i18n="readingP">Keep the strip still. This takes 5 seconds.</p>
+          <div class="ring">
+            <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="none" stroke="#e8edf1" stroke-width="7"/><circle id="ringArc" cx="50" cy="50" r="44" fill="none" stroke="#2f7fc1" stroke-width="7" stroke-linecap="round" stroke-dasharray="276.5" stroke-dashoffset="276.5"/></svg>
+            <div class="lbl"><div><b class="num" id="ringSec">0.0</b><span data-i18n="seconds">seconds</span></div></div>
+          </div>
+        </div>
+
+        <!-- pane 4: result -->
+        <div class="pane" data-pane="4">
+          <div class="result-big"><span class="v num" id="resV">0.32</span><span class="u">mg/L</span></div>
+          <div class="verdict safe" id="resVerdict" data-i18n="safe">Safe. Chlorine is in the JJM range.</div>
+          <div class="scale"><div class="pin" id="resPin" style="left:16%"></div></div>
+          <div class="ticks"><span style="left:0">0</span><span style="left:10%">0.2</span><span style="left:50%">1.0</span><span style="left:100%">2.0</span></div>
+          <div class="kv" id="recKv">
+            <dt data-i18n="kvStrip">Strip</dt><dd>JS-26-0019-4471</dd>
+            <dt data-i18n="kvPlace">Place</dt><dd>T-118, 21.02 N, 74.23 E</dd>
+            <dt data-i18n="kvTime">Time</dt><dd id="recTime">20 Oct, 10:42</dd>
+            <dt data-i18n="kvSig">Signal fingerprint</dt><dd class="num" id="recHash">9f3c 71a2 e08d</dd>
+          </div>
+          <div class="queue"><span class="dot"></span><span data-i18n="queued">Signed by reader R-0417. Uploads to WQMIS when online.</span></div>
+          <div class="push"><button class="btn ghost" data-next="0" data-i18n="done">Done</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- right side -->
+    <div>
+      <div class="readout">
+        <div class="readout-head">
+          <h2>Electrode signal, live</h2>
+          <span class="hint">The strip's current falls as 1 over the square root of time. Only a real reading draws this curve.</span>
+          <span class="live num" id="liveVal">&nbsp;<small></small></span>
+        </div>
+        <div id="traceChart" role="img" aria-label="Current against time for the strip being read"></div>
+        <div class="explain">
+          <div><h4>No colour to judge</h4><p>The reader measures current, so lighting, eyesight and colour charts stop mattering.</p></div>
+          <div><h4>pH does not fool it</h4><p>A dried buffer pad on the strip holds the sample near pH 5.5, where almost all free chlorine is HOCl.</p></div>
+          <div><h4>One strip, one record</h4><p>Each strip has a serial and works once. The reader signs the full curve with place and time.</p></div>
+        </div>
+      </div>
+
+      <div class="cheat">
+        <h2>Try to fake a test</h2>
+        <p>A 2026 audit found more tests reported than samples received. Here is what happens when someone tries to fake one.</p>
+        <div class="cheat-row">
+          <button id="cheatReuse" disabled>Use the same strip again<small>Strip already spent</small></button>
+          <button id="cheatTyped">Type a number by hand<small>No electrode signal</small></button>
+          <button id="cheatCopy" disabled>Upload a copied curve<small>Same fingerprint as an old test</small></button>
+          <button id="cheatInvent">Upload an invented curve<small>Wrong physics, unsigned</small></button>
+        </div>
+        <div class="verdicts" id="verdicts" aria-live="polite"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= WHY IT READS TRUE ======================= -->
+<section class="view" id="view-lab" aria-label="Why it reads true">
+  <div class="intro">
+    <div>
+      <h1>Change the water. The reading stays honest.</h1>
+      <p>Move the sliders to change the chlorine and the sample's pH. Compare JalSatya with a bare electrode and with a colour chart read by eye.</p>
+    </div>
+    <div class="facts">
+      <div><b class="num" id="labLod">0.03</b><span>mg/L detection limit (simulated)</span></div>
+      <div><b class="num" id="labWithin">98%</b><span>of readings within ±0.1 mg/L, 0 to 2 mg/L</span></div>
+      <div><b class="num">0.1</b><span>mg/L differences told apart, shown as a number, not a shade</span></div>
+    </div>
+  </div>
+  <div class="lab">
+    <div class="card">
+      <h2>Your water sample</h2>
+      <p class="lead">The true chlorine is what a lab would report.</p>
+      <div class="ctrl"><label for="cSlider">Free chlorine <span class="num" id="cVal">0.50 mg/L</span></label><input id="cSlider" type="range" min="0" max="2" step="0.01" value="0.5"></div>
+      <div class="ctrl"><label for="phSlider">Sample pH <span class="num" id="phVal">8.0</span></label><input id="phSlider" type="range" min="6" max="9" step="0.1" value="8.0"></div>
+      <div class="compare">
+        <div class="row us"><div><strong>JalSatya strip</strong><span>Buffered, read electrically</span></div><div style="text-align:right"><span class="num" id="usVal">0.50</span><div class="err" id="usErr"></div></div></div>
+        <div class="row"><div><strong>Bare electrode</strong><span>Same sensor, no buffer pad</span></div><div style="text-align:right"><span class="num" id="bareVal">0.13</span><div class="err" id="bareErr"></div></div></div>
+        <div class="row"><div><strong>Colour chart by eye</strong><span>Modelled as three shades judged by eye</span></div><div style="text-align:right"><span class="num" id="eyeVal" style="font-size:20px">0.2 to 1.1</span><div class="err" id="eyeErr"></div></div></div>
+      </div>
+      <p class="footnote">Simulated with the Cottrell equation, chlorine chemistry (pKa 7.54 at 25 °C) and measured-scale noise, blank drift and strip-to-strip variation. Lab validation is part of the next stage.</p>
+    </div>
+    <div class="lab-charts">
+      <div class="card">
+        <h2>Reading against sample pH</h2>
+        <p class="lead">At pH 8.5 most free chlorine is hypochlorite, which a bare electrode barely sees. The buffer pad fixes that.</p>
+        <div id="phChart" class="chart-280"></div>
+      </div>
+      <div class="card">
+        <h2>Calibration across the working range</h2>
+        <p class="lead">Simulated strips at nine standard concentrations. The line is the reader's calibration.</p>
+        <div id="calChart" class="chart-280"></div>
+        <div class="stats">
+          <div><b class="num" id="stSlope">430</b><span>nA per mg/L on a 3 mm electrode</span></div>
+          <div><b class="num" id="stLoq">0.09</b><span>mg/L lowest quantified level</span></div>
+          <div><b class="num" id="stMae">0.026</b><span>mg/L mean error, 2,000 test samples</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= VILLAGE TWIN ======================= -->
+<section class="view" id="view-twin" aria-label="Village chlorine twin">
+  <div class="intro">
+    <div>
+      <h1>From a reading to the right dose.</h1>
+      <p>Every verified test teaches a small model how chlorine fades through this village's pipes. It tells the pump operator the dose that keeps every tap safe, and tells testers which taps to check next.</p>
+    </div>
+    <div class="facts">
+      <div><b class="num">120</b><span>household taps in this sample scheme</span></div>
+      <div><b class="num" id="twFar">24 h</b><span>water age at the farthest tap</span></div>
+      <div><b class="num" id="twTests">5</b><span>verified tests used to learn the pipes</span></div>
+    </div>
+  </div>
+  <div class="twin">
+    <div class="mapwrap">
+      <svg id="villageMap" viewBox="0 0 900 600" role="img" aria-label="Map of the village pipe network coloured by chlorine at each tap"></svg>
+      <div class="legend"><span><i style="background:var(--low)"></i>Below 0.2 mg/L</span><span><i style="background:var(--safe)"></i>0.2 to 1.0</span><span><i style="background:var(--high)"></i>Above 1.0</span></div>
+    </div>
+    <div class="side">
+      <div class="card">
+        <h2>Chlorine dose at the tank</h2>
+        <p class="lead">Drag to try a dose. The green band is the safe window the twin computed.</p>
+        <div class="dose-num num" id="doseVal">1.00 <small style="font-size:18px">mg/L</small></div>
+        <input id="doseSlider" type="range" min="0.4" max="2.2" step="0.01" value="1.0" aria-label="Dose at the tank in mg/L">
+        <div class="window-bar"><div class="ok" id="winOk"></div><div class="cur" id="winCur"></div></div>
+        <div class="ticks"><span style="left:0">0.4</span><span style="left:100%">2.2</span></div>
+        <div style="margin-top:14px" class="meter"><b class="num" id="safeCount">118</b><span>of <span id="tapTotal">120</span> taps in range</span></div>
+        <p class="lead" id="doseNote" style="margin-top:6px"></p>
+        <button class="btn small" id="applyRec">Use the recommended dose</button>
+      </div>
+      <div class="card">
+        <h2>Test these taps next</h2>
+        <p class="lead">Two tail-end taps, as the framework asks, plus the tap the model is least sure about.</p>
+        <ul class="todo" id="todo"></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= DISTRICT ======================= -->
+<section class="view" id="view-district" aria-label="District view">
+  <div class="intro">
+    <div>
+      <h1>Every number on this page has a strip behind it.</h1>
+      <p>Block and district officers see verified tests only. Reported tests can never exceed strips issued, so WQMIS counts only tests that used a real strip.</p>
+    </div>
+    <div class="facts">
+      <div><b class="num" id="dTests">0</b><span>verified tests this month</span></div>
+      <div><b class="num" id="dBlocked">0</b><span>records refused at the source</span></div>
+      <div><b class="num" id="dLow">0</b><span>villages with a tap below 0.2 mg/L</span></div>
+    </div>
+  </div>
+  <div class="district">
+    <div class="card">
+      <h2>Villages in Sample Block</h2>
+      <p class="lead">Sample data for demonstration.</p>
+      <table>
+        <thead><tr><th>Village</th><th class="num">Strips issued</th><th class="num">Verified tests</th><th class="num">Refused</th><th class="num">Lowest tap</th><th>Status</th></tr></thead>
+        <tbody id="dRows"></tbody>
+      </table>
+    </div>
+    <div class="side">
+      <div id="dAlerts"></div>
+      <div class="card">
+        <h2>Lowest tail-end chlorine by village</h2>
+        <div id="dChart" class="chart-280"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="in">
+    <img src="parakram.png" alt="Team PARAKRAM">
+    <span>SIH 2026, problem statement SIH26253, Ministry of Jal Shakti</span>
+    <span>Code: <a href="https://github.com/codedbysuryansh/PARAKRAM-SIH26253" id="repoLink">github.com/codedbysuryansh/PARAKRAM-SIH26253</a></span>
+    <span class="note">Prototype. Sensor readings are simulated from published electrochemistry, and village and district data are sample data. Field and lab validation follow in the next stage.</span>
+  </div>
+</footer>
+
+<script src="vendor/echarts.min.js"></script>
+<script src="model.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
