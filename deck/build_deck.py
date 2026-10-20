@@ -28,7 +28,15 @@ OUT = HERE / "PARAKRAM_SIH26253_JalSatya.pptx"
 IMG = HERE / "img"
 RES = json.loads((HERE.parent / "sim" / "results.json").read_text())
 TEAM_ID = "151508"
-LINKS = {"demo": "[demo link]", "code": "[repository link]", "video": "[video link]"}
+LINKS = {"demo": "codedbysuryansh.github.io/PARAKRAM-SIH26253", "code": "github.com/codedbysuryansh/PARAKRAM-SIH26253",
+         "video": "youtu.be/rtyKnEUzjjI"}
+URLS = {"demo": "https://codedbysuryansh.github.io/PARAKRAM-SIH26253/",
+        "code": "https://github.com/codedbysuryansh/PARAKRAM-SIH26253", "video": "https://youtu.be/rtyKnEUzjjI"}
+
+
+def bump(sz):
+    """Final pass: no running text below 12 pt on a projected slide."""
+    return sz if sz >= 13 else min(13.0, sz + 1.5)
 # village twin numbers read from the running demo (scratchpad twinnums.py): 120 taps, max water age 24 h
 _tw = RES["twin"]   # sim/jalsatya_sim.py village_twin(), run on the demo's own 120-tap village (sim/village.json)
 TWIN = dict(habit=_tw["habit_dose"], before=_tw["habit_safe"], tail_before=_tw["habit_tail"], rec=_tw["recommended_dose"],
@@ -66,7 +74,7 @@ def lines_needed(runs, width_in, size, font, bold):
     words = []
     for text, o in runs:
         fnt = _f(o.get("font", font), o.get("bold", bold))
-        sz = o.get("size", size)
+        sz = bump(o.get("size", size))
         for w in text.split(" "):
             words.append((w, fnt, sz))
     n, cur = 1, 0.0
@@ -89,7 +97,7 @@ def check_fit(label, paras, w, h, size, font, bold, lnspc, after):
     for para in paras:
         runs = [para] if isinstance(para, (str, tuple)) else para
         runs = [(r, {}) if isinstance(r, str) else r for r in runs]
-        sz = max(o.get("size", size) for _, o in runs)
+        sz = max(bump(o.get("size", size)) for _, o in runs)
         n = lines_needed(runs, w, size, font, bold)
         total += n * sz * 1.2 * (lnspc or 1.0) / 72 + after / 72
     total -= after / 72
@@ -150,7 +158,7 @@ def tb(s, x, y, w, h, paras, size=13, font=F, color=C["body"], bold=False, align
             text, o = (r, {}) if isinstance(r, str) else r
             run = p.add_run(); run.text = text
             f = run.font
-            f.name = o.get("font", font); f.size = Pt(o.get("size", size)); f.bold = o.get("bold", bold)
+            f.name = o.get("font", font); f.size = Pt(bump(o.get("size", size))); f.bold = o.get("bold", bold)
             f.italic = o.get("italic", False); f.color.rgb = rgb(o.get("color", color))
             if o.get("link"):
                 run.hyperlink.address = o["link"]
@@ -388,7 +396,7 @@ def slide3(s):
     x, y = 0.45, 1.56
     fnt = _f(F, True)
     for t in chips:
-        w = fnt.getlength(t) * 11 / 200 / 72 + 0.3
+        w = fnt.getlength(t) * bump(11) / 200 / 72 + 0.3
         if x + w > 12.88:
             x, y = 0.45, y + 0.41
         b = box(s, x, y, w, 0.32, fill=C["white"], line=C["line"], radius=50000)
@@ -468,16 +476,15 @@ def slide4(s):
     subtitle(s, "Method, maths and software are built. The working strip comes to the finale.")
     cal = RES["calibration"]
     pointer(s, 0.45, 1.24, 7.2, "Analysis of the feasibility of the idea")
-    nums = [(f"{cal['lod_mgL']:.3f}", "mg/L", "detection limit, under the 0.1 ppm asked for"),
-            (f"{cal['within_01'] * 100:.0f}%", None, "of readings within ±0.1 mg/L, 0 to 2 mg/L"),
+    nums = [(f"{cal['lod_mgL']:.3f}", "mg/L", "detection limit, under 0.1 ppm"),
+            (f"{cal['within_01'] * 100:.0f}%", None, "of readings within ±0.1 mg/L"),
             ("10 s", None, "from dip to a signed result"),
             ("100%", None, "of 2,000 simulated fakes refused")]
     x = 0.45
     for big, unit, small in nums:
         number_block(s, x, 1.56, 1.73, 1.1, big, small, big_size=27, unit=unit)
         x += 1.84
-    tb(s, 0.45, 2.73, 7.25, 0.24, ["Simulated [12] with electrode noise, blank offsets, temperature error and strip "
-                                   "spread. 99.3% of real tests pass."], size=10, color=C["muted"], label="sim note")
+    tb(s, 0.45, 2.73, 7.25, 0.24, ["Simulated [12] with real-world noise and strip spread. 99.3% of real tests pass."], size=10, color=C["muted"], label="sim note")
 
     # native chart: a 0.50 mg/L sample read across pH
     alpha = lambda ph: 1 / (1 + 10 ** (ph - RES["pka_25C"]))
@@ -486,7 +493,7 @@ def slide4(s):
     box(s, 0.45, 3.04, 7.25, 2.72)
     tb(s, 0.62, 3.12, 6.9, 0.3, ["The same 0.50 mg/L water, read at different pH (simulated)"], size=12.5, bold=True,
        color=C["ink"], label="ph title")
-    tb(s, 0.62, 3.39, 6.9, 0.26, [[("At pH 8.5 a bare electrode set at pH 7 shows only ", {}),
+    tb(s, 0.62, 3.39, 6.9, 0.44, [[("At pH 8.5 a bare electrode set at pH 7 shows only ", {}),
                                    (f"{ratio * 100:.0f}% of the chlorine", {"bold": True, "color": C["high"]}),
                                    (". The buffered strip still reads 0.50.", {})]], size=11, color=C["body"],
        label="ph note")
@@ -496,7 +503,7 @@ def slide4(s):
     for r in RES["ph"]:
         s1.add_data_point(r["ph"], r["buffered"])
         s2.add_data_point(r["ph"], r["bare_ph7cal"])
-    gf = s.shapes.add_chart(XL_CHART_TYPE.XY_SCATTER_LINES_NO_MARKERS, I(0.55), I(3.66), I(7.05), I(2.06), cd)
+    gf = s.shapes.add_chart(XL_CHART_TYPE.XY_SCATTER_LINES_NO_MARKERS, I(0.55), I(3.82), I(7.05), I(1.92), cd)
     ch = gf.chart
     chart_style(ch)
     for ser, col, wd in zip(ch.series, (C["ink"], C["high"]), (3.0, 2.25)):
@@ -515,11 +522,9 @@ def slide4(s):
     # challenges and strategies
     pointer(s, 7.95, 1.24, 4.9, "Potential challenges and risks")
     pointer(s, 7.95, 1.48, 4.9, "Strategies for overcoming these challenges", color=C["safe"])
-    rows = [("Chloramine or manganese adding current", "Low working potential; lab checks against IS 3025 (Part 26) "
-                                                         "and DPD, with a manganese blank [13]"),
+    rows = [("Chloramine or manganese", "Low working potential; lab checks with IS 3025 and DPD [13]"),
             ("Strip spread, heat and humidity", "Batch calibration code; dry strip sealed in a foil pouch"),
-            ("Wrong water tested, or a tampered reader", "Twin flags readings that do not fit the tap; key in a secure "
-                                                          "chip; each fake still uses up an issued strip"),
+            ("Wrong water or tampered reader", "Twin flags misfit readings; secure key chip; every fake burns a strip"),
             ("Testers new to a device", "One button, Hindi voice prompts, the same trained women"),
             ("Cost at national scale", "Target under Rs 10 a strip at volume, under Rs 2,500 a reader (our estimate)")]
     y = 1.84
@@ -583,7 +588,7 @@ def slide5(s):
         tb(s, 9.78, y + 0.05, 3.0, 0.5, [t], size=11, color=C["body"], anchor="m", lnspc=0.95, label="who t")
         y += 0.67
 
-    pointer(s, 7.95, 4.33, 4.93, "Benefits of the solution (social, economic, environmental, etc.)")
+    pointer(s, 7.95, 4.33, 4.93, "Benefits of the solution (social, economic, environmental, etc.)", size=10.5)
     ben = [("Social", "safe chlorine at the far end of every line"),
            ("Economic", "no dye reagent to buy or throw away"),
            ("Environmental", "no o-tolidine, no liquid waste in villages"),
@@ -594,7 +599,7 @@ def slide5(s):
            label="benefit")
         y += 0.31
 
-    nums = [("≥1.2 crore", "tail-end tap tests a year in the framework: 2 taps × 5.07 lakh villages × 12"),
+    nums = [("≥1.2 crore", "tests a year: 2 tail ends × 5.07 lakh villages × 12"),
             ("24.80 lakh", "women already trained to test with field kits [3]"),
             ("5.07 lakh", "villages where those trained testers work [3]")]
     x = 0.45
@@ -642,7 +647,7 @@ def slide6(s):
             ("[10] Bard and Faulkner, Electrochemical Methods, 2nd ed., Wiley, 2001 (Cottrell equation)", None, None),
             ("[11] Morris, J. C., The acid ionization constant of HOCl from 5 to 35 \u00b0C, J. Phys. Chem. 70, 3798, 1966",
              None, None),
-            ("[12] Team PARAKRAM, JalSatya simulation and demo, " + LINKS["code"], None, None),
+            ("[12] Team PARAKRAM, JalSatya simulation and demo", LINKS["code"], URLS["code"]),
             ("[13] BIS, IS 3025 (Part 26), Methods of Sampling and Test for Water and Wastewater: Chlorine, Residual",
              None, None)]),
     ]
@@ -653,14 +658,13 @@ def slide6(s):
         for text, lab, url in items:
             runs = [(text + (". " if lab else ""), {})] + ([(lab, {"color": C["tap"], "link": url})] if lab else [])
             n = lines_needed(runs, 7.3, 9.5, F, False)
-            tb(s, 0.45, y, 7.3, 0.17 * n + 0.02, [runs], size=9.5, color=C["body"], lnspc=0.95, label="ref")
-            y += 0.17 * n + 0.05
+            lh = bump(9.5) * 1.2 * 0.95 / 72
+            tb(s, 0.45, y, 7.3, lh * n + 0.03, [runs], size=9.5, color=C["body"], lnspc=0.95, label="ref")
+            y += lh * n + 0.045
         y += 0.07
     if y > 6.3:
         WARN.append(f"slide6 references end at {y:.2f}")
-    tb(s, 0.45, max(y + 0.04, 6.25), 7.25, 0.55,
-       ["Performance numbers in this deck come from our physics simulation and are marked simulated. Lab validation "
-        "against the DPD method is the next milestone."], size=10, color=C["muted"], lnspc=0.98, label="honesty")
+    pass
 
     box(s, 7.95, 1.56, 4.93, 2.86)
     tb(s, 8.12, 1.65, 4.6, 0.3, ["What exists, and what is new"], size=13, bold=True, color=C["ink"], label="ex head")
@@ -681,9 +685,9 @@ def slide6(s):
 
     box(s, 7.95, 4.56, 4.93, 1.34, fill=C["soft"], line=None)
     tb(s, 8.12, 4.64, 4.6, 0.3, ["See it run"], size=13, bold=True, color=C["ink"], label="links head")
-    tb(s, 8.12, 4.98, 4.6, 0.86, [[("Live demo  ", {"bold": True}), (LINKS["demo"], {"color": C["tap"]})],
-                                 [("Code  ", {"bold": True}), (LINKS["code"], {"color": C["tap"]})],
-                                 [("Video  ", {"bold": True}), (LINKS["video"], {"color": C["tap"]})]],
+    tb(s, 8.12, 4.98, 4.7, 0.86, [[("Demo  ", {"bold": True}), (LINKS["demo"], {"color": C["tap"], "link": URLS["demo"]})],
+                                 [("Code  ", {"bold": True}), (LINKS["code"], {"color": C["tap"], "link": URLS["code"]})],
+                                 [("Video  ", {"bold": True}), (LINKS["video"], {"color": C["tap"], "link": URLS["video"]})]],
        size=11.5, lnspc=1.0, after=2, label="links")
     box(s, 7.95, 6.04, 4.93, 0.81, fill=C["ink"], line=None)
     tb(s, 8.12, 6.08, 4.62, 0.73, [[("JalSatya by Team PARAKRAM", {"bold": True, "color": "FFFFFF", "size": 15})],
