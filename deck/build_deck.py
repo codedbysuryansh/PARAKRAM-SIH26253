@@ -36,7 +36,7 @@ URLS = {"demo": "https://codedbysuryansh.github.io/PARAKRAM-SIH26253/",
 
 def bump(sz):
     """Final pass: no running text below 12 pt on a projected slide."""
-    return sz if sz >= 13 else min(13.0, sz + 1.5)
+    return sz   # sizes as designed (no global bump)
 # village twin numbers read from the running demo (scratchpad twinnums.py): 120 taps, max water age 24 h
 _tw = RES["twin"]   # sim/jalsatya_sim.py village_twin(), run on the demo's own 120-tap village (sim/village.json)
 TWIN = dict(habit=_tw["habit_dose"], before=_tw["habit_safe"], tail_before=_tw["habit_tail"], rec=_tw["recommended_dose"],
