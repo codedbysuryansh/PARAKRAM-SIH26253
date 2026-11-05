@@ -15,7 +15,6 @@ JalSatya is a dye-free test strip for free residual chlorine, a pocket reader an
 | `demo/` | The working prototype. Open `demo/index.html` in Chrome, Edge or Safari. It runs offline. |
 | `sim/` | The physics model behind the demo: strip current (Cottrell equation), chlorine chemistry, noise and drift, the Proof-of-Test checks and the village twin. `python3 sim/jalsatya_sim.py` writes `sim/results.json`. |
 | `deck/` | The 6-slide idea deck on the official SIH 2026 template, and the script that builds it. |
-| `DEMO_SCRIPT.md` | The 2-minute walkthrough: what to say, what to click, and answers to likely questions. |
 
 ## The prototype
 
